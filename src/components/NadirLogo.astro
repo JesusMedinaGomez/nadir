@@ -1,18 +1,14 @@
+
 ---
 const { large = false, alt = 'Nadir' } = Astro.props;
-
-const base = import.meta.env.BASE_URL;
-const logoLight = `${base}nadir-logo-vectorial.svg`;
-const logoDark = `${base}nadir-logo-vectorial-oscuro.svg`;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
-<picture class={`nadir-logo-wrap${large ? ' is-large' : ''}`}>
-  <source srcset={logoDark} media="(prefers-color-scheme: dark)" />
+<picture class:list={['nadir-logo-wrap', large && 'is-large']}>
   <img
-    src={logoLight}
+    src={`${base}nadir-logo.svg`}
     alt={alt}
-    class={`nadir-logo${large ? ' nadir-logo--large' : ''}`}
+    class:list={['nadir-logo', large && 'nadir-logo--large']}
     loading="eager"
-    decoding="sync"
   />
 </picture>
