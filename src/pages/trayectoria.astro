@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+const hitos=[
+{tiempo:'2019 — actualidad',tipo:'Formación',titulo:'Ciencias de la Comunicación',institucion:'Universidad Nacional Autónoma de México',detalle:'Estudio de los medios, la escritura, la investigación y las formas de contar lo que sucede.'},
+{tiempo:'2023 — actualidad',tipo:'Formación',titulo:'Matemáticas',institucion:'Universidad Abierta y a Distancia de México',detalle:'Una disciplina que acompaña mi curiosidad y mi manera de formular preguntas.'},
+{tiempo:'2023 — actualidad',tipo:'Proyecto independiente',titulo:'Toponautas',institucion:'Divulgación matemática',detalle:'Producción de videos y materiales para compartir ideas matemáticas con públicos distintos.'},
+{tiempo:'2026 — actualidad',tipo:'Proyecto audiovisual',titulo:'Observatorio Mexicano del Autobús',institucion:'Historia y cultura del transporte',detalle:'Investigación, guion y edición audiovisual centrados en la memoria del transporte.'},
+{tiempo:'2026 — actualidad',tipo:'Proyecto editorial',titulo:'Nadir',institucion:'Literatura, ensayo y cultura',detalle:'Un espacio independiente para publicar preguntas, lecturas, textos e ideas en distintas formas.'}
+];
+---
+<Base title="Trayectoria">
+<header class="container page-heading trajectory-heading"><span class="eyebrow">Estudios y proyectos</span><h1>Trayectoria</h1><p>Un recorrido por las disciplinas, los oficios y los proyectos que han acompañado mi trabajo.</p></header>
+<section class="container timeline" aria-label="Recorrido académico y creativo">
+{hitos.map((h,i)=><details class="timeline-item" open={i===0}><summary><span class="timeline-number">{String(i+1).padStart(2,'0')}</span><span class="timeline-year">{h.tiempo}</span><span class="timeline-main"><small>{h.tipo}</small><strong>{h.titulo}</strong><span>{h.institucion}</span></span><span class="timeline-more" aria-hidden="true">+</span></summary><div class="timeline-detail">{h.detalle}</div></details>)}
+</section>
+</Base>

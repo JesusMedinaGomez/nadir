@@ -1,46 +1,22 @@
-# Astro Starter Kit: Basics
+# Amnésis — lector y capturas editoriales
 
-```sh
-npm create astro@latest -- --template basics
-```
+Actualización sobre el prototipo anterior. Incluye tema nocturno azul tinta, elimina la lupa y añade exportación de un fragmento seleccionado o del artículo completo.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Instalación
 
-## 🚀 Project Structure
+En la raíz del proyecto: `npm install` y `npm run dev`. Abre http://localhost:4321/.
 
-Inside of your Astro project, you'll see the following folders and files:
+Si ya usas el proyecto anterior, puedes reemplazar **únicamente**:
+- `src/components/ReadingTools.astro`
+- `src/styles/global.css`
+- `src/pages/publicaciones/[slug].astro`
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+## Capturas
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+Abre un artículo. Selecciona un párrafo con el ratón, pulsa «Herramientas → Captura → Capturar fragmento seleccionado». Para el artículo completo usa «Capturar artículo completo». Las capturas tienen fondo marfil, nombre Amnésis, título, texto y firma del autor al final, independientemente del tema elegido.
 
-## 🧞 Commands
+Para imágenes que exceden 16000 píxeles de alto al exportar a PNG a 2×, el sistema genera un archivo SVG de altura variable para que se pueda ampliar sin pixelación. Las capturas representan el texto del artículo, sin la interfaz, y simplifican formatos de texto internos. En SVG se emplea una fuente serif de compatibilidad y puede verse ligeramente distinta si no está instalada la tipografía web.
 
-All commands are run from the root of the project, from a terminal:
+## Nota
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Los textos de ejemplo del prototipo no corresponden a escritos definitivos. El archivo de artículos sigue utilizando el mismo sistema de datos que la versión anterior.

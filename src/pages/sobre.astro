@@ -1,0 +1,6 @@
+---
+import Base from '../layouts/Base.astro';
+import perfil from '../content/perfil.json';
+const base=import.meta.env.BASE_URL;
+---
+<Base title="Sobre mí"><header class="container page-heading"><h1>Sobre mí</h1></header><section class="container prose-layout">{perfil.biografia.map(parrafo=><p>{parrafo}</p>)}<h2>{perfil.tituloIntencion}</h2>{perfil.intencion.map(parrafo=><p>{parrafo}</p>)}<p><a class="editorial-link" href={`${base}trayectoria/`}>Ver mi trayectoria ↗</a></p></section></Base>

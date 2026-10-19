@@ -1,0 +1,75 @@
+media:
+  input: public/media
+  output: /media
+content:
+  - name: publicaciones
+    label: Publicaciones
+    type: collection
+    path: src/content/publicaciones
+    format: json
+    filename: "{primary}.json"
+    view:
+      primary: titulo
+    fields:
+      - {name: slug, label: Identificador, type: string, required: true}
+      - {name: titulo, label: Título, type: string, required: true}
+      - {name: autor, label: Autor, type: string}
+      - {name: genero, label: Género, type: string}
+      - {name: tema, label: Tema, type: string}
+      - {name: fecha, label: Fecha, type: string}
+      - {name: tiempo, label: Tiempo de lectura, type: string}
+      - {name: resumen, label: Resumen, type: text}
+      - {name: estado, label: Estado, type: string}
+      - {name: orden, label: Orden, type: number}
+      - name: parrafos
+        label: Párrafos
+        type: text
+        list: true
+  - name: pies-de-semana
+    label: El pie de semana
+    type: collection
+    path: src/content/pies-de-semana
+    format: json
+    filename: "{primary}.json"
+    view:
+      primary: titulo
+    fields:
+      - {name: numero, label: Número, type: string, required: true}
+      - {name: slug, label: Identificador, type: string, required: true}
+      - {name: titulo, label: Título, type: string, required: true}
+      - {name: fecha, label: Fecha, type: string}
+      - {name: autor, label: Autor, type: string}
+      - {name: extracto, label: Resumen, type: text}
+      - {name: publicado, label: Publicado, type: boolean, default: true}
+      - name: parrafos
+        label: Texto
+        type: text
+        list: true
+  - name: portada
+    label: Portada y El pie de semana
+    type: file
+    path: src/content/portada.json
+    format: json
+    fields:
+      - {name: fraseInicio, label: Frase principal, type: string}
+      - {name: fraseFinal, label: Remate de la frase, type: string}
+      - {name: presentacion, label: Presentación, type: text}
+      - {name: declaracionEtiqueta, label: Nombre de la sección, type: string}
+      - {name: declaracionInicio, label: Inicio de la declaración, type: string}
+      - {name: declaracionFinal, label: Cierre de la declaración, type: string}
+      - {name: declaracionParrafo, label: Descripción de la sección, type: text}
+  - name: perfil
+    label: Sobre mí y Nadir
+    type: file
+    path: src/content/perfil.json
+    format: json
+    fields:
+      - name: biografia
+        label: Biografía
+        type: text
+        list: true
+      - {name: tituloIntencion, label: Título de la intención, type: string}
+      - name: intencion
+        label: Intención de Nadir
+        type: text
+        list: true

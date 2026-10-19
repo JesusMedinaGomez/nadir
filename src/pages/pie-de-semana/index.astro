@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import portada from '../../content/portada.json';
+import {pies} from '../../data/pies.js';
+const base=import.meta.env.BASE_URL;
+---
+<Base title="El pie de semana" description={portada.declaracionParrafo}>
+<header class="container page-heading"><span class="eyebrow">Escrituras breves · Apuntes y fragmentos</span><h1>El pie de semana</h1><p>{portada.declaracionParrafo}</p></header>
+<section class="container pies-list" aria-label="Archivo de notas">
+{pies.map(n=><a class="pie-entry" href={`${base}pie-de-semana/${n.slug}/`}><span class="pie-num">NOTA {n.numero}</span><div><h2>{n.titulo}</h2><p>{n.extracto}</p></div><span class="pie-entry-arrow">↗</span></a>)}
+</section>
+</Base>
