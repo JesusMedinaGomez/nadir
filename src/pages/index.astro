@@ -4,8 +4,8 @@ import NadirLogo from '../components/NadirLogo.astro';
 import portada from '../content/portada.json';
 import {publicaciones,generos} from '../data/publicaciones.js';
 import {pies} from '../data/pies.js';
-const base=import.meta.env.BASE_URL;
-const link=p=>`${base}${p}`;
+const base=import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const link=p=>`${base}${p.replace(/^\/+/, '')}`;
 ---
 <Base>
   <section class="hero container">

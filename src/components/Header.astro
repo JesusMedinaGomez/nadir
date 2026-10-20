@@ -3,8 +3,8 @@ import ThemeSwitcher from './ThemeSwitcher.astro';
 import ReadingTools from './ReadingTools.astro';
 import NadirLogo from './NadirLogo.astro';
 const { minimal=false }=Astro.props;
-const base=import.meta.env.BASE_URL;
-const link=p=>`${base}${p}`;
+const base=import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const link=p=>`${base}${p.replace(/^\/+/, '')}`;
 ---
 <header class:list={['topbar',minimal&&'reading-topbar']}>
   {minimal ? <a class="back-link" href={link('publicaciones/')} aria-label="Volver al archivo">← <span>Volver</span></a> : <a class="mobileword" href={base} aria-label="Ir al inicio"><NadirLogo /></a>}

@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import {publicaciones} from '../../data/publicaciones.js';
 export function getStaticPaths(){return publicaciones.map(p=>({params:{slug:p.slug},props:{publication:p}}))}
 const {publication:p}=Astro.props;
-const base=import.meta.env.BASE_URL;
+const base=import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 ---
 <Base title={p.titulo} minimal={true} description={p.resumen}>
