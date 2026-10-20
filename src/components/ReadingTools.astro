@@ -1,4 +1,7 @@
-<div class="reading-tools" id="reading-tools">
+---
+const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+<div class="reading-tools" id="reading-tools" data-logo-src={`${baseUrl}nadir-logo.svg`}>
   <button type="button" class="tools-trigger" aria-label="Herramientas de lectura" aria-controls="reader-tools-panel" aria-expanded="false">✦ <span class="tools-trigger-label">Herramientas</span></button>
   <section class="tools-panel" id="reader-tools-panel" aria-label="Herramientas de lectura" hidden>
     <div class="tools-title"><strong>Tu manera de leer</strong><button type="button" class="tools-close" aria-label="Cerrar herramientas">×</button></div>
@@ -33,10 +36,6 @@
             <option value="svg">SVG · zoom ilimitado</option>
           </select>
         </label>
-        <fieldset class="export-fieldset"><legend>Resaltado en imagen</legend>
-          <label><input type="radio" name="capture-highlights" value="on" checked> Con color resaltado</label>
-          <label><input type="radio" name="capture-highlights" value="off"> Texto normal</label>
-        </fieldset>
       </div>
       <div class="capture-actions" role="group" aria-label="Contenido de la captura">
         <button type="button" id="capture-selection" aria-pressed="false">Capturar fragmento seleccionado</button>
@@ -44,7 +43,7 @@
         <button type="button" id="capture-refresh-selection" class="capture-refresh-selection" hidden>Usar nueva selección</button>
       </div>
       <p id="capture-current" class="capture-current" aria-live="polite">Aún no has preparado una captura.</p>
-      <p class="capture-note">Elige si la imagen conserva los resaltados del marcatextos o se exporta con texto normal. Si seleccionas otro fragmento, pulsa «Usar nueva selección» para actualizar la vista previa.</p>
+      <p class="capture-note">Las imágenes siempre se exportan con texto limpio, sin las marcas de lectura. Si seleccionas otro fragmento, pulsa «Usar nueva selección».</p>
       <p id="capture-status" class="capture-status" role="status" aria-live="polite"></p>
       <div class="capture-preview" id="capture-preview" hidden>
         <p id="capture-preview-label" class="capture-preview-label"></p>
@@ -52,6 +51,17 @@
         <a id="capture-download" download="nadir.png">Descargar imagen</a>
       </div>
     </div>
+    <details class="nadir-share-section">
+      <summary>↗ Compartir esta lectura</summary>
+      <div class="nadir-share-actions">
+        <button type="button" id="nadir-share-native">Compartir…</button>
+        <button type="button" id="nadir-share-copy">Copiar enlace</button>
+        <a id="nadir-share-facebook" target="_blank" rel="noopener noreferrer">Facebook ↗</a>
+        <a id="nadir-share-x" target="_blank" rel="noopener noreferrer">X ↗</a>
+      </div>
+      <p class="nadir-share-help">En Instagram puedes compartir la imagen descargada o usar «Compartir…» desde tu teléfono.</p>
+      <p class="nadir-share-message" id="nadir-share-message" role="status" aria-live="polite"></p>
+    </details>
     <p class="tool-footnote">Las herramientas permanecen abiertas mientras seleccionas texto. Cierra con × o Esc.</p>
   </section>
   <span class="sr-only" id="tools-status" role="status" aria-live="polite"></span>
@@ -75,6 +85,21 @@ function initializeAmnesisReadingTools() {
  const captureSelectionButton=shell.querySelector('#capture-selection'),captureWholeButton=shell.querySelector('#capture-whole');
  const refreshSelectionButton=shell.querySelector('#capture-refresh-selection');
  let mode='normal',color='yellow',storedRange=null,selectedText='',storedSelectionSegments=[],imageUrl=null,currentCapture=null,renderVersion=0;
+ const shareURL=window.location.href.split('#')[0];
+ const shareTitle=document.querySelector('h1')?.textContent?.trim() || document.title;
+ const shareMessage=shell.querySelector('#nadir-share-message');
+ const logoSrc=shell.dataset.logoSrc || (window.location.origin + '/nadir-logo.svg');
+ let logoAssetPromise=null;
+ shell.querySelector('#nadir-share-facebook').href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(shareURL);
+ shell.querySelector('#nadir-share-x').href='https://twitter.com/intent/tweet?'+new URLSearchParams({url:shareURL,text:shareTitle});
+ shell.querySelector('#nadir-share-copy').addEventListener('click',async()=>{
+   try{await navigator.clipboard.writeText(shareURL);shareMessage.textContent='Enlace copiado.';}
+   catch{shareMessage.textContent='Copia esta dirección: '+shareURL;}
+ });
+ shell.querySelector('#nadir-share-native').addEventListener('click',async()=>{
+   if(navigator.share){try{await navigator.share({title:shareTitle,url:shareURL});}catch(e){if(e.name!=='AbortError')shareMessage.textContent='Usa «Copiar enlace» para compartir.';}}
+   else{try{await navigator.clipboard.writeText(shareURL);shareMessage.textContent='Enlace copiado para compartir.';}catch{shareMessage.textContent='Copia esta dirección: '+shareURL;}}
+ });
  const setOpen=open=>{panel.hidden=!open;trigger.setAttribute('aria-expanded',String(open));if(open)selectionShortcut.hidden=true;};
  trigger.addEventListener('click',()=>setOpen(panel.hidden));
  shell.querySelector('.tools-close').addEventListener('click',()=>setOpen(false));
@@ -163,6 +188,33 @@ function initializeAmnesisReadingTools() {
  const typeface='"Instrument Serif", Georgia, serif';
  const escapeXml=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
 
+
+ async function getLogoAsset(){
+   if(logoAssetPromise) return logoAssetPromise;
+   logoAssetPromise=(async()=>{
+     try{
+       const response=await fetch(logoSrc);
+       if(!response.ok) throw new Error('No se pudo cargar el logotipo.');
+       const svgText=await response.text();
+       const dataUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svgText);
+       const image=new Image();
+       image.decoding='async';
+       image.src=dataUrl;
+       if(image.decode){ await image.decode().catch(()=>{}); }
+       else { await new Promise((resolve,reject)=>{ image.onload=()=>resolve(); image.onerror=reject; }); }
+       return { dataUrl, image, aspect: image.naturalWidth && image.naturalHeight ? image.naturalWidth/image.naturalHeight : 835/370 };
+     }catch(error){
+       return { dataUrl:null, image:null, aspect:835/370 };
+     }
+   })();
+   return logoAssetPromise;
+ }
+ function logoPlan(p,landscape){
+   const width=landscape?114:128;
+   const aspect=835/370;
+   const height=Math.round(width/aspect);
+   return { width, height, x:Math.round((p.width-width)/2), y:0 };
+ }
  function collectSegments(node, inheritedMark=null, output=[]){
    if(node.nodeType===Node.TEXT_NODE){
      if(node.nodeValue) output.push({text:node.nodeValue, markColor:inheritedMark});
@@ -281,7 +333,6 @@ function initializeAmnesisReadingTools() {
  }
  const chosenOrientation=()=>shell.querySelector('input[name="capture-orientation"]:checked')?.value||'vertical';
  const chosenFormat=()=>shell.querySelector('#capture-format').value;
- const chosenHighlightMode=()=>shell.querySelector('input[name="capture-highlights"]:checked')?.value||'on';
  function plan(full,orientation){
    // La orientación altera el ancho de la lámina, nunca estira los glifos.
    // Una captura completa sigue siendo larga para conservar el texto íntegro.
@@ -293,6 +344,7 @@ function initializeAmnesisReadingTools() {
    const textSize=full?(landscape?35:36):(landscape?48:43);
    const lineHeight=Math.round(textSize*1.48);
    const blocks=[];let y=110;
+   const logoBox=logoPlan({width},landscape);
    blocks.push({kind:'small',text:'NADIR  /  '+meta.toUpperCase(),y});y+=88;
    for(const line of wrap(title,textWidth,titleSize+'px '+typeface)){
      blocks.push({kind:'title',text:line,y});y+=titleSize*1.18;
@@ -317,9 +369,12 @@ function initializeAmnesisReadingTools() {
    blocks.push({kind:'author',text:author,y});y+=44;
    const footer=onlyTitle?'El pie de semana · Nadir':full?'Artículo completo · Nadir':'Fragmento de «'+title+'» · Nadir';
    for(const line of wrap(footer,textWidth,'20px Arial')){blocks.push({kind:'footer',text:line,y});y+=29;}
+   y+=18;
+   logoBox.y=y;
+   y+=logoBox.height;
    // Los fragmentos tienen una altura mínima de tarjeta; el texto completo crece sin recortes.
-   const height=Math.max(Math.ceil(y+(onlyTitle?75:100)),full?0:landscape?810:1160);
-   return {width,height,pad,textWidth,blocks,titleSize};
+   const height=Math.max(Math.ceil(y+(onlyTitle?50:72)),full?0:landscape?810:1160);
+   return {width,height,pad,textWidth,blocks,titleSize,logoBox};
  }
  const palette={background:'#F4F0E7',ink:'#25342E',accent:'#A35E49',rule:'#CEC5B6',secondary:'#84796F'};
  const markPalette={yellow:'#ECCD64',green:'#9BCFAA',pink:'#E8A5BA',blue:'#9FBFEE'};
@@ -395,7 +450,7 @@ function initializeAmnesisReadingTools() {
      return parts;
    }).join('');
  }
- function paintCanvas(p,format,showMarks){
+ async function paintCanvas(p,format,showMarks){
    const maxDimension=16384, maxArea=75000000;
    const wantedScale=2;
    const possibleScale=Math.min(wantedScale,maxDimension/p.width,maxDimension/p.height,Math.sqrt(maxArea/(p.width*p.height)));
@@ -410,26 +465,34 @@ function initializeAmnesisReadingTools() {
      if(block.kind==='rule'){c.fillStyle=palette.rule;c.fillRect(p.pad,block.y,p.textWidth,1);continue;}
      drawMarkedLine(c,p,block,showMarks);
    }
+   const logoAsset=await getLogoAsset();
+   if(logoAsset?.image && p.logoBox){
+     c.drawImage(logoAsset.image,p.logoBox.x,p.logoBox.y,p.logoBox.width,p.logoBox.height);
+   }
    const mime=format==='jpeg'?'image/jpeg':'image/png';
    const url=canvas.toDataURL(mime,format==='jpeg'?0.92:undefined);
    return {url,ext:format==='jpeg'?'jpg':'png',note:possibleScale<1.99?'La imagen se exportó a una resolución adaptada a su longitud.':'Imagen preparada para descargar.'};
  }
- function paintSvg(p,showMarks){
+ async function paintSvg(p,showMarks){
    const markup=p.blocks.map(block=>{
      if(block.kind==='rule')return `<line x1="${p.pad}" x2="${p.pad+p.textWidth}" y1="${block.y}" y2="${block.y}" stroke="#CEC5B6"/>`;
      ctx.font=fontFor(block,p);
      return renderSvgLine(block,p,showMarks);
    }).join('');
-   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${p.width}" height="${p.height}" viewBox="0 0 ${p.width} ${p.height}"><rect width="100%" height="100%" fill="${palette.background}"/>${markup}</svg>`;
-   return {url:URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'})),ext:'svg',note:'SVG listo: podrás ampliarlo sin perder nitidez. Puede usar una fuente alternativa según el visor.'};
+   const logoAsset=await getLogoAsset();
+   const logoMarkup=(logoAsset?.dataUrl && p.logoBox)
+     ? `<image href="${logoAsset.dataUrl}" x="${p.logoBox.x}" y="${p.logoBox.y}" width="${p.logoBox.width}" height="${p.logoBox.height}" preserveAspectRatio="xMidYMid meet"/>`
+     : '';
+   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${p.width}" height="${p.height}" viewBox="0 0 ${p.width} ${p.height}"><rect width="100%" height="100%" fill="${palette.background}"/>${markup}${logoMarkup}</svg>`;
+   return {url:URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'})),ext:'svg',note:'SVG listo: podrás ampliarlo sin perder nitidez. Incluye el logotipo de Nadir.'};
  }
- function paint(full){
+ async function paint(full){
    const p=plan(full,chosenOrientation());
    const requested=chosenFormat();
-   const showMarks = chosenHighlightMode() === 'on';
+   const showMarks = false;
    if(requested==='svg')return paintSvg(p,showMarks);
-   const raster=paintCanvas(p,requested,showMarks);
-   return raster||{...paintSvg(p,showMarks),note:'El texto supera el límite seguro para una sola imagen '+requested.toUpperCase()+'. Se generó SVG completo, sin recortes. Elige SVG para textos de esta longitud.'};
+   const raster=await paintCanvas(p,requested,showMarks);
+   return raster||{...(await paintSvg(p,showMarks)),note:'El texto supera el límite seguro para una sola imagen '+requested.toUpperCase()+'. Se generó SVG completo, sin recortes. Elige SVG para textos de esta longitud.'};
  }
  function updateCaptureChoice(){
    applySelectionAwareness();
@@ -439,8 +502,7 @@ function initializeAmnesisReadingTools() {
    const kind=currentCapture.full?'Artículo completo':'Fragmento seleccionado';
    const orientation=chosenOrientation()==='vertical'?'vertical':'horizontal';
    const format=chosenFormat()==='jpeg'?'JPG':chosenFormat().toUpperCase();
-   const marks=chosenHighlightMode()==='on'?'con resaltado':'texto normal';
-   currentLabel.textContent='Captura activa: '+kind+' · '+orientation+' · '+format+' · '+marks;
+   currentLabel.textContent='Captura activa: '+kind+' · '+orientation+' · '+format;
  }
  async function redrawCapture(){
    if(!currentCapture)return;
@@ -450,14 +512,14 @@ function initializeAmnesisReadingTools() {
    try{
      await document.fonts.ready;
      if(version!==renderVersion)return;
-     const result=paint(currentCapture.full);
+     const result=await paint(currentCapture.full);
      if(version!==renderVersion){if(result.url.startsWith('blob:'))URL.revokeObjectURL(result.url);return;}
      const oldUrl=imageUrl;
      imageUrl=result.url;
      previewImage.src=imageUrl;
      download.href=imageUrl;
      download.download='nadir-'+(currentCapture.full?'articulo':'fragmento')+'.'+result.ext;
-     previewLabel.textContent=(currentCapture.full?'Artículo completo':'Fragmento')+' · '+(chosenOrientation()==='vertical'?'Vertical':'Horizontal')+' · '+result.ext.toUpperCase()+' · '+(chosenHighlightMode()==='on'?'Con resaltado':'Texto normal');
+     previewLabel.textContent=(currentCapture.full?'Artículo completo':'Fragmento')+' · '+(chosenOrientation()==='vertical'?'Vertical':'Horizontal')+' · '+result.ext.toUpperCase();
      preview.hidden=false;
      captureStatus.textContent=result.note;
      if(oldUrl&&oldUrl.startsWith('blob:'))URL.revokeObjectURL(oldUrl);
@@ -487,9 +549,6 @@ function initializeAmnesisReadingTools() {
  shell.querySelector('#capture-format').addEventListener('change',()=>{
    updateCaptureChoice();if(currentCapture)redrawCapture();
  });
- shell.querySelectorAll('input[name="capture-highlights"]').forEach(input=>input.addEventListener('change',()=>{
-   updateCaptureChoice();if(currentCapture)redrawCapture();
- }));
  applySelectionAwareness();
  updateCaptureChoice();
  setMode('normal');
