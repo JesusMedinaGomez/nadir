@@ -1,2 +1,7 @@
 import { defineConfig } from 'astro/config';
-export default defineConfig({output:'static'});
+
+export default defineConfig({
+  site: 'https://jesusmedinagomez.github.io',
+  base: '/nadir',
+  output: 'static',
+});
