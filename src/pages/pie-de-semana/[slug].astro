@@ -33,9 +33,11 @@ const mostrarDesarrollo = Boolean(extra) && plain(extra) !== plain(n.titulo);
         {n.fecha && <span>{new Date(`${n.fecha}T12:00:00`).toLocaleDateString('es-MX', {day:'numeric',month:'long',year:'numeric'})}</span>}
       </p>
     </header>
-    <div class:list={['reading-body', 'pie-reading-body', !mostrarDesarrollo && 'pie-reading-body--empty']}>
-      {mostrarDesarrollo && <Fragment set:html={renderMarkdown(extra)} />}
-    </div>
+    {mostrarDesarrollo && (
+      <div class="reading-body pie-reading-body">
+        <Fragment set:html={renderMarkdown(extra)} />
+      </div>
+    )}
     <footer class="reading-end"><a href={`${base}pie-de-semana/`}>← Volver a El pie de semana</a></footer>
   </article>
 </Base>

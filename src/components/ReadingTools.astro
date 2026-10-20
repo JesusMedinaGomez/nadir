@@ -297,8 +297,12 @@ function initializeAmnesisReadingTools() {
    for(const line of wrap(title,textWidth,titleSize+'px '+typeface)){
      blocks.push({kind:'title',text:line,y});y+=titleSize*1.18;
    }
-   y+=38;blocks.push({kind:'rule',y});y+=90;
    const sections=getSections(full);
+   // Las notas breves de El pie de semana son piezas de una sola frase:
+   // su exportación no debe reservar espacio para un desarrollo inexistente.
+   const onlyTitle = full && Boolean(document.querySelector('.pie-reading')) && sections.length === 0;
+   if (!onlyTitle) { y+=38;blocks.push({kind:'rule',y});y+=90; }
+   else { y+=45; }
    for(const section of sections){
      const header=['h2','h3'].includes(section.type);
      const fs=header?Math.round(textSize*1.33):textSize;
@@ -308,12 +312,13 @@ function initializeAmnesisReadingTools() {
      for(const line of lines){blocks.push({kind:header?'subhead':full?'text':'excerpt',segments:line,y,size:fs});y+=lh;}
      y+=header?42:full?36:50;
    }
-   y+=45;blocks.push({kind:'rule',y});y+=62;
+   if (!onlyTitle) { y+=45;blocks.push({kind:'rule',y});y+=62; }
+   else { y+=10; }
    blocks.push({kind:'author',text:author,y});y+=44;
-   const footer=full?'Artículo completo · Nadir':'Fragmento de «'+title+'» · Nadir';
+   const footer=onlyTitle?'El pie de semana · Nadir':full?'Artículo completo · Nadir':'Fragmento de «'+title+'» · Nadir';
    for(const line of wrap(footer,textWidth,'20px Arial')){blocks.push({kind:'footer',text:line,y});y+=29;}
    // Los fragmentos tienen una altura mínima de tarjeta; el texto completo crece sin recortes.
-   const height=Math.max(Math.ceil(y+100),full?0:landscape?810:1160);
+   const height=Math.max(Math.ceil(y+(onlyTitle?75:100)),full?0:landscape?810:1160);
    return {width,height,pad,textWidth,blocks,titleSize};
  }
  const palette={background:'#F4F0E7',ink:'#25342E',accent:'#A35E49',rule:'#CEC5B6',secondary:'#84796F'};
