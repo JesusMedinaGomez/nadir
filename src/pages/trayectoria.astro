@@ -1,11 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
+import {renderMarkdown} from '../utils/markdown.js';
 import trayectoria from '../content/trayectoria.json';
 const { hitos } = trayectoria;
 ---
 <Base title="Trayectoria">
-<header class="container page-heading trajectory-heading"><span class="eyebrow">Estudios y proyectos</span><h1>Trayectoria</h1><p>{trayectoria.introduccion}</p></header>
+<header class="container page-heading trajectory-heading"><span class="eyebrow">Estudios y proyectos</span><h1>Trayectoria</h1><div class="editorial-markdown" set:html={renderMarkdown(trayectoria.introduccionEnriquecida || '')} /></header>
 <section class="container timeline" aria-label="Recorrido académico y creativo">
-{hitos.map((h,i)=><details class="timeline-item" open={i===0}><summary><span class="timeline-number">{String(i+1).padStart(2,'0')}</span><span class="timeline-year">{h.tiempo}</span><span class="timeline-main"><small>{h.tipo}</small><strong>{h.titulo}</strong><span>{h.institucion}</span></span><span class="timeline-more" aria-hidden="true">+</span></summary><div class="timeline-detail">{h.detalle}</div></details>)}
+{hitos.map((h,i)=><details class="timeline-item" open={i===0}><summary><span class="timeline-number">{String(i+1).padStart(2,'0')}</span><span class="timeline-year">{h.tiempo}</span><span class="timeline-main"><small>{h.tipo}</small><strong>{h.titulo}</strong><span>{h.institucion}</span></span><span class="timeline-more" aria-hidden="true">+</span></summary><div class="timeline-detail editorial-markdown" set:html={renderMarkdown(h.detalleEnriquecido || '')} /></details>)}
 </section>
 </Base>

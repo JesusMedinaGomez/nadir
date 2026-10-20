@@ -1,40 +1,40 @@
 {
-  "introduccion": "Un recorrido por las disciplinas, los oficios y los proyectos que han acompañado mi trabajo.",
   "hitos": [
     {
       "tiempo": "2019 — actualidad",
       "tipo": "Formación",
       "titulo": "Ciencias de la Comunicación",
       "institucion": "Universidad Nacional Autónoma de México",
-      "detalle": "Estudio de los medios, la escritura, la investigación y las formas de contar lo que sucede."
+      "detalleEnriquecido": "Estudio de los medios, la escritura, la investigación y las formas de contar lo que sucede."
     },
     {
       "tiempo": "2023 — actualidad",
       "tipo": "Formación",
       "titulo": "Matemáticas",
       "institucion": "Universidad Abierta y a Distancia de México",
-      "detalle": "Una disciplina que acompaña mi curiosidad y mi manera de formular preguntas."
+      "detalleEnriquecido": "Una disciplina que acompaña mi curiosidad y mi manera de formular preguntas."
     },
     {
       "tiempo": "2023 — actualidad",
       "tipo": "Proyecto independiente",
       "titulo": "Toponautas",
       "institucion": "Divulgación matemática",
-      "detalle": "Producción de videos y materiales para compartir ideas matemáticas con públicos distintos."
+      "detalleEnriquecido": "Producción de videos y materiales para compartir ideas matemáticas con públicos distintos."
     },
     {
       "tiempo": "2026 — actualidad",
       "tipo": "Proyecto audiovisual",
       "titulo": "Observatorio Mexicano del Autobús",
       "institucion": "Historia y cultura del transporte",
-      "detalle": "Investigación, guion y edición audiovisual centrados en la memoria del transporte."
+      "detalleEnriquecido": "Investigación, guion y edición audiovisual centrados en la memoria del transporte."
     },
     {
       "tiempo": "2026 — actualidad",
       "tipo": "Proyecto editorial",
       "titulo": "Nadir",
       "institucion": "Literatura, ensayo y cultura",
-      "detalle": "Un espacio independiente para publicar preguntas, lecturas, textos e ideas en distintas formas."
+      "detalleEnriquecido": "Un espacio independiente para publicar preguntas, lecturas, textos e ideas en distintas formas."
     }
-  ]
+  ],
+  "introduccionEnriquecida": "Un recorrido por las disciplinas, los oficios y los proyectos que han acompañado mi trabajo."
 }

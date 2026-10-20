@@ -252,3 +252,20 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{ou
 .read-brand .nadir-logo{width:94px}
 .footer-brand .nadir-logo{width:135px}
 @media(max-width:760px){.hero-title .nadir-logo{width:100%}}
+
+/* Contenidos largos escritos con el editor enriquecido de Nadir. */
+.reading-body h2,.reading-body h3,.reading-body h4{font-family:'Instrument Serif',Georgia,serif;font-weight:400;line-height:1.13;letter-spacing:-.015em;margin:1.65em 0 .55em}
+.reading-body h2{font-size:clamp(35px,4vw,54px)}.reading-body h3{font-size:clamp(28px,3vw,40px)}.reading-body h4{font-size:1.3em}
+.reading-body ul,.reading-body ol{padding-left:1.5em;margin:0 0 1.3em}.reading-body li{margin-bottom:.35em}
+.reading-body blockquote,.editorial-markdown blockquote{border-left:2px solid var(--accent);margin:1.7em 0;padding:.1em 0 .1em 1.2em;font-style:italic}
+.reading-body img,.editorial-markdown img{max-width:100%;height:auto;display:block;margin:1.8em auto;border-radius:3px}
+.reading-body a,.editorial-markdown a{color:inherit;text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:4px}
+.reading-body pre,.editorial-markdown pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--card);padding:1.2em;font: .68em/1.5 monospace}
+.reading-body :not(pre)>code,.editorial-markdown :not(pre)>code{font:.8em monospace;background:var(--card);padding:.1em .25em}
+.reading-body hr,.editorial-markdown hr{border:0;border-top:1px solid var(--line);margin:2.3em 0}
+.reading-body p:first-child::first-letter{font-size:inherit;float:none;line-height:inherit;padding:0;color:inherit}
+.reading-body > p:first-child::first-letter{font-size:3.1em;float:left;line-height:.78;padding:13px 10px 0 0;color:var(--accent)}
+.editorial-markdown p{max-width:780px}.editorial-markdown h2,.editorial-markdown h3{font-family:'Instrument Serif',Georgia,serif;font-weight:400}
+.editorial-markdown h2{font-size:clamp(34px,4vw,48px)}.editorial-markdown h3{font-size:clamp(28px,3vw,38px)}
+.editorial-markdown ul,.editorial-markdown ol{padding-left:1.5em;line-height:1.9}.editorial-markdown li{margin-bottom:.45em}
+.timeline-detail p{margin:0 0 .8em}.timeline-detail p:last-child{margin-bottom:0}

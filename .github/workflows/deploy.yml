@@ -1,26 +1,20 @@
-
 name: Publicar Nadir
-
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Obtener proyecto
         uses: actions/checkout@v4
-
       - name: Compilar Astro
-        uses: withastro/action@v6
-
+        uses: withastro/action@v3
   deploy:
     needs: build
     runs-on: ubuntu-latest

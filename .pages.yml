@@ -44,17 +44,11 @@ content:
     label: Orden
     type: number
   - name: contenido
-    label: Texto enriquecido (nuevo editor)
+    label: Cuerpo de la publicación
     type: rich-text
-    description: Redacta aquí con títulos, negritas, citas, enlaces e imágenes. La integración con el
-      lector de Nadir se activará por separado.
     options:
       format: markdown
       switcher: true
-  - name: parrafos
-    label: Párrafos
-    type: text
-    list: true
 - name: pies-de-semana
   label: El pie de semana
   type: collection
@@ -90,15 +84,11 @@ content:
     type: boolean
     default: true
   - name: contenido
-    label: Nota enriquecida (nuevo editor)
+    label: Texto de la nota
     type: rich-text
     options:
       format: markdown
       switcher: true
-  - name: parrafos
-    label: Texto
-    type: text
-    list: true
 - name: portada
   label: Portada y El pie de semana
   type: file
@@ -132,11 +122,8 @@ content:
   path: src/content/trayectoria.json
   format: json
   fields:
-  - name: introduccion
-    label: Presentación
-    type: text
   - name: introduccionEnriquecida
-    label: Presentación enriquecida
+    label: Presentación
     type: rich-text
     options:
       format: markdown
@@ -160,11 +147,8 @@ content:
     - name: institucion
       label: Institución o proyecto
       type: string
-    - name: detalle
-      label: Descripción
-      type: text
     - name: detalleEnriquecido
-      label: Descripción enriquecida
+      label: Descripción
       type: rich-text
       options:
         format: markdown
@@ -176,24 +160,16 @@ content:
   format: json
   fields:
   - name: biografiaEnriquecida
-    label: Biografía (editor enriquecido)
+    label: Biografía
     type: rich-text
     options:
       format: markdown
       switcher: true
-  - name: biografia
-    label: Biografía
-    type: text
-    list: true
   - name: tituloIntencion
     label: Título de la intención
     type: string
-  - name: intencion
-    label: Intención de Nadir
-    type: text
-    list: true
   - name: intencionEnriquecida
-    label: Intención editorial (editor enriquecido)
+    label: Intención editorial de Nadir
     type: rich-text
     options:
       format: markdown
