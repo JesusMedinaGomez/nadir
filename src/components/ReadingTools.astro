@@ -54,12 +54,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
     <details class="nadir-share-section">
       <summary>↗ Compartir esta lectura</summary>
       <div class="nadir-share-actions">
-        <button type="button" id="nadir-share-native">Compartir…</button>
-        <button type="button" id="nadir-share-copy">Copiar enlace</button>
-        <a id="nadir-share-facebook" target="_blank" rel="noopener noreferrer">Facebook ↗</a>
-        <a id="nadir-share-x" target="_blank" rel="noopener noreferrer">X ↗</a>
+        <button type="button" id="nadir-share-native"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.6 6.6-4.1m-6.6 7 6.6 4"/></svg><span>Compartir</span></button>
+        <button type="button" id="nadir-share-copy"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copiar enlace</span></button>
+        <a id="nadir-share-facebook" target="_blank" rel="noopener noreferrer" aria-label="Compartir en Facebook"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M13.46 21v-8.2h2.76l.41-3.2h-3.17V7.55c0-.93.26-1.56 1.59-1.56h1.7V3.13A22.64 22.64 0 0 0 14.27 3c-2.46 0-4.15 1.5-4.15 4.26V9.6H7.34v3.2h2.78V21z"/></svg><span>Facebook</span></a>
+        <a id="nadir-share-x" target="_blank" rel="noopener noreferrer" aria-label="Compartir en X"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M18.9 3H22l-6.77 7.74L23.2 21h-6.24l-4.89-6.39L6.47 21H3.35l7.24-8.27L2.8 3h6.4l4.42 5.86L18.9 3Zm-1.1 16.2h1.72L8.27 4.7H6.42z"/></svg><span>X</span></a>
+        <button type="button" id="nadir-share-instagram" aria-label="Compartir en Instagram"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram</span></button>
       </div>
-      <p class="nadir-share-help">En Instagram puedes compartir la imagen descargada o usar «Compartir…» desde tu teléfono.</p>
+      <p class="nadir-share-help">Para Instagram, utiliza la opción de compartir de tu teléfono o publica la imagen descargada.</p>
       <p class="nadir-share-message" id="nadir-share-message" role="status" aria-live="polite"></p>
     </details>
     <p class="tool-footnote">Las herramientas permanecen abiertas mientras seleccionas texto. Cierra con × o Esc.</p>
@@ -95,6 +96,14 @@ function initializeAmnesisReadingTools() {
  shell.querySelector('#nadir-share-copy').addEventListener('click',async()=>{
    try{await navigator.clipboard.writeText(shareURL);shareMessage.textContent='Enlace copiado.';}
    catch{shareMessage.textContent='Copia esta dirección: '+shareURL;}
+ });
+ shell.querySelector('#nadir-share-instagram').addEventListener('click',async()=>{
+   if(navigator.share){
+     try{await navigator.share({title:shareTitle,url:shareURL});shareMessage.textContent='Selecciona Instagram si está disponible en tu dispositivo.';}
+     catch(e){if(e.name!=='AbortError')shareMessage.textContent='Descarga la captura y publícala desde Instagram.';}
+   }else{
+     shareMessage.textContent='Instagram no permite compartir directamente desde esta web. Descarga la captura y súbela desde la aplicación.';
+   }
  });
  shell.querySelector('#nadir-share-native').addEventListener('click',async()=>{
    if(navigator.share){try{await navigator.share({title:shareTitle,url:shareURL});}catch(e){if(e.name!=='AbortError')shareMessage.textContent='Usa «Copiar enlace» para compartir.';}}
