@@ -62,7 +62,7 @@
 function initializeAmnesisReadingTools() {
  if (document.documentElement.dataset.nadirToolsReady === 'true') return;
  const shell=document.getElementById('reading-tools');
- const body=document.querySelector('.reading-body');
+ const body=document.querySelector('.reading-body') || document.querySelector('.pie-reading-heading h1');
  if (!shell || !body) return;
  document.documentElement.dataset.nadirToolsReady = 'true';
  const panel=shell.querySelector('.tools-panel'), trigger=shell.querySelector('.tools-trigger');
