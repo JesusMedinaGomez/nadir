@@ -58,6 +58,23 @@ content:
       - {name: declaracionInicio, label: Inicio de la declaración, type: string}
       - {name: declaracionFinal, label: Cierre de la declaración, type: string}
       - {name: declaracionParrafo, label: Descripción de la sección, type: text}
+  - name: trayectoria
+    label: Trayectoria
+    type: file
+    path: src/content/trayectoria.json
+    format: json
+    fields:
+      - {name: introduccion, label: Presentación, type: text}
+      - name: hitos
+        label: Estudios y proyectos
+        type: object
+        list: true
+        fields:
+          - {name: tiempo, label: Periodo, type: string, required: true}
+          - {name: tipo, label: Categoría, type: string}
+          - {name: titulo, label: Título, type: string, required: true}
+          - {name: institucion, label: Institución o proyecto, type: string}
+          - {name: detalle, label: Descripción, type: text}
   - name: perfil
     label: Sobre mí y Nadir
     type: file
