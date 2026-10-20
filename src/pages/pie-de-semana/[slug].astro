@@ -2,12 +2,40 @@
 import Base from '../../layouts/Base.astro';
 import {renderMarkdown} from '../../utils/markdown.js';
 import {pies} from '../../data/pies.js';
-export function getStaticPaths(){return pies.map(n=>({params:{slug:n.slug},props:{nota:n}}))}
-const {nota:n}=Astro.props;
-const base=import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+export function getStaticPaths() {
+  return pies.map(n => ({params: {slug: n.slug}, props: {nota: n}}));
+}
+
+const {nota: n} = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+// Una nota puede ser solo una frase; no repetirla como cuerpo de lectura.
+const plain = value => String(value ?? '')
+  .replace(/<[^>]*>/g, '')
+  .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+  .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+  .replace(/^[#>\s*-]+/gm, '')
+  .replace(/[\*_`~]/g, '')
+  .replace(/[\s\u00a0]+/g, ' ')
+  .trim()
+  .replace(/[.!?…]+$/, '')
+  .toLocaleLowerCase('es');
+const extra = String(n.contenido ?? '').trim();
+const mostrarDesarrollo = Boolean(extra) && plain(extra) !== plain(n.titulo);
 ---
 <Base title={n.titulo} minimal={true} description={n.extracto}>
-<article class="reading-layout"><header class="reading-heading"><span class="eyebrow">El pie de semana · Nota {n.numero}</span><h1>{n.titulo}</h1><p class="reading-details"><span data-article-author>{n.autor}</span><span>{n.fecha}</span></p></header>
-<div class="reading-body"><Fragment set:html={renderMarkdown(n.contenido || '')} /></div>
-<footer class="reading-end"><a href={`${base}pie-de-semana/`}>← Volver a El pie de semana</a></footer></article>
+  <article class="reading-layout pie-reading">
+    <header class="reading-heading pie-reading-heading">
+      <span class="eyebrow">EL PIE DE SEMANA · NOTA {n.numero}</span>
+      <h1>{n.titulo}</h1>
+      <p class="reading-details">
+        <span data-article-author>{n.autor}</span>
+        {n.fecha && <span>{new Date(`${n.fecha}T12:00:00`).toLocaleDateString('es-MX', {day:'numeric',month:'long',year:'numeric'})}</span>}
+      </p>
+    </header>
+    <div class:list={['reading-body', 'pie-reading-body', !mostrarDesarrollo && 'pie-reading-body--empty']}>
+      {mostrarDesarrollo && <Fragment set:html={renderMarkdown(extra)} />}
+    </div>
+    <footer class="reading-end"><a href={`${base}pie-de-semana/`}>← Volver a El pie de semana</a></footer>
+  </article>
 </Base>

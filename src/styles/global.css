@@ -269,3 +269,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{ou
 .editorial-markdown h2{font-size:clamp(34px,4vw,48px)}.editorial-markdown h3{font-size:clamp(28px,3vw,38px)}
 .editorial-markdown ul,.editorial-markdown ol{padding-left:1.5em;line-height:1.9}.editorial-markdown li{margin-bottom:.45em}
 .timeline-detail p{margin:0 0 .8em}.timeline-detail p:last-child{margin-bottom:0}
+
+/* El pie de semana: presentación breve, sin letra capitular ni repetición del título. */
+.pie-reading{max-width:860px;min-height:calc(100vh - 240px)}
+.pie-reading-heading{margin-top:clamp(40px,7vw,115px);margin-bottom:clamp(44px,6vw,85px)}
+.pie-reading-heading .eyebrow{color:var(--accent);font-family:'DM Sans',sans-serif;font-size:.75rem;letter-spacing:.18em;font-weight:700}
+.pie-reading-heading h1{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(48px,7.5vw,106px);font-weight:400;font-style:italic;line-height:1.08;letter-spacing:-.025em;margin:30px 0 25px}
+.pie-reading-heading .reading-details{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}
+.pie-reading-heading .reading-details span+span::before{content:'·';margin-right:12px;color:var(--accent)}
+.pie-reading-body{max-width:680px;margin-inline:auto}
+.pie-reading-body p:first-child::first-letter,.pie-reading-body > p:first-child::first-letter{float:none;font-size:inherit;line-height:inherit;padding:0;color:inherit}
+.pie-reading-body--empty{min-height:0}
+.pie-reading .reading-end{margin-top:clamp(55px,7vw,100px)}
+@media(max-width:590px){.pie-reading-heading h1{font-size:clamp(45px,12vw,68px)}.pie-reading-heading{margin-top:35px}}
