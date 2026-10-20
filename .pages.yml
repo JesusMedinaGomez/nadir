@@ -1,92 +1,200 @@
 media:
   input: public/media
-  output: /media
+  output: /nadir/media
 content:
-  - name: publicaciones
-    label: Publicaciones
-    type: collection
-    path: src/content/publicaciones
-    format: json
-    filename: "{primary}.json"
-    view:
-      primary: titulo
+- name: publicaciones
+  label: Publicaciones
+  type: collection
+  path: src/content/publicaciones
+  format: json
+  filename: '{primary}.json'
+  view:
+    primary: titulo
+  fields:
+  - name: slug
+    label: Identificador
+    type: string
+    required: true
+  - name: titulo
+    label: Título
+    type: string
+    required: true
+  - name: autor
+    label: Autor
+    type: string
+  - name: genero
+    label: Género
+    type: string
+  - name: tema
+    label: Tema
+    type: string
+  - name: fecha
+    label: Fecha
+    type: string
+  - name: tiempo
+    label: Tiempo de lectura
+    type: string
+  - name: resumen
+    label: Resumen
+    type: text
+  - name: estado
+    label: Estado
+    type: string
+  - name: orden
+    label: Orden
+    type: number
+  - name: contenido
+    label: Texto enriquecido (nuevo editor)
+    type: rich-text
+    description: Redacta aquí con títulos, negritas, citas, enlaces e imágenes. La integración con el
+      lector de Nadir se activará por separado.
+    options:
+      format: markdown
+      switcher: true
+  - name: parrafos
+    label: Párrafos
+    type: text
+    list: true
+- name: pies-de-semana
+  label: El pie de semana
+  type: collection
+  path: src/content/pies-de-semana
+  format: json
+  filename: '{primary}.json'
+  view:
+    primary: titulo
+  fields:
+  - name: numero
+    label: Número
+    type: string
+    required: true
+  - name: slug
+    label: Identificador
+    type: string
+    required: true
+  - name: titulo
+    label: Título
+    type: string
+    required: true
+  - name: fecha
+    label: Fecha
+    type: string
+  - name: autor
+    label: Autor
+    type: string
+  - name: extracto
+    label: Resumen
+    type: text
+  - name: publicado
+    label: Publicado
+    type: boolean
+    default: true
+  - name: contenido
+    label: Nota enriquecida (nuevo editor)
+    type: rich-text
+    options:
+      format: markdown
+      switcher: true
+  - name: parrafos
+    label: Texto
+    type: text
+    list: true
+- name: portada
+  label: Portada y El pie de semana
+  type: file
+  path: src/content/portada.json
+  format: json
+  fields:
+  - name: fraseInicio
+    label: Frase principal
+    type: string
+  - name: fraseFinal
+    label: Remate de la frase
+    type: string
+  - name: presentacion
+    label: Presentación
+    type: text
+  - name: declaracionEtiqueta
+    label: Nombre de la sección
+    type: string
+  - name: declaracionInicio
+    label: Inicio de la declaración
+    type: string
+  - name: declaracionFinal
+    label: Cierre de la declaración
+    type: string
+  - name: declaracionParrafo
+    label: Descripción de la sección
+    type: text
+- name: trayectoria
+  label: Trayectoria
+  type: file
+  path: src/content/trayectoria.json
+  format: json
+  fields:
+  - name: introduccion
+    label: Presentación
+    type: text
+  - name: introduccionEnriquecida
+    label: Presentación enriquecida
+    type: rich-text
+    options:
+      format: markdown
+      switcher: true
+  - name: hitos
+    label: Estudios y proyectos
+    type: object
+    list: true
     fields:
-      - {name: slug, label: Identificador, type: string, required: true}
-      - {name: titulo, label: Título, type: string, required: true}
-      - {name: autor, label: Autor, type: string}
-      - {name: genero, label: Género, type: string}
-      - {name: tema, label: Tema, type: string}
-      - {name: fecha, label: Fecha, type: string}
-      - {name: tiempo, label: Tiempo de lectura, type: string}
-      - {name: resumen, label: Resumen, type: text}
-      - {name: estado, label: Estado, type: string}
-      - {name: orden, label: Orden, type: number}
-      - name: parrafos
-        label: Párrafos
-        type: text
-        list: true
-  - name: pies-de-semana
-    label: El pie de semana
-    type: collection
-    path: src/content/pies-de-semana
-    format: json
-    filename: "{primary}.json"
-    view:
-      primary: titulo
-    fields:
-      - {name: numero, label: Número, type: string, required: true}
-      - {name: slug, label: Identificador, type: string, required: true}
-      - {name: titulo, label: Título, type: string, required: true}
-      - {name: fecha, label: Fecha, type: string}
-      - {name: autor, label: Autor, type: string}
-      - {name: extracto, label: Resumen, type: text}
-      - {name: publicado, label: Publicado, type: boolean, default: true}
-      - name: parrafos
-        label: Texto
-        type: text
-        list: true
-  - name: portada
-    label: Portada y El pie de semana
-    type: file
-    path: src/content/portada.json
-    format: json
-    fields:
-      - {name: fraseInicio, label: Frase principal, type: string}
-      - {name: fraseFinal, label: Remate de la frase, type: string}
-      - {name: presentacion, label: Presentación, type: text}
-      - {name: declaracionEtiqueta, label: Nombre de la sección, type: string}
-      - {name: declaracionInicio, label: Inicio de la declaración, type: string}
-      - {name: declaracionFinal, label: Cierre de la declaración, type: string}
-      - {name: declaracionParrafo, label: Descripción de la sección, type: text}
-  - name: trayectoria
-    label: Trayectoria
-    type: file
-    path: src/content/trayectoria.json
-    format: json
-    fields:
-      - {name: introduccion, label: Presentación, type: text}
-      - name: hitos
-        label: Estudios y proyectos
-        type: object
-        list: true
-        fields:
-          - {name: tiempo, label: Periodo, type: string, required: true}
-          - {name: tipo, label: Categoría, type: string}
-          - {name: titulo, label: Título, type: string, required: true}
-          - {name: institucion, label: Institución o proyecto, type: string}
-          - {name: detalle, label: Descripción, type: text}
-  - name: perfil
-    label: Sobre mí y Nadir
-    type: file
-    path: src/content/perfil.json
-    format: json
-    fields:
-      - name: biografia
-        label: Biografía
-        type: text
-        list: true
-      - {name: tituloIntencion, label: Título de la intención, type: string}
-      - name: intencion
-        label: Intención de Nadir
-        type: text
-        list: true
+    - name: tiempo
+      label: Periodo
+      type: string
+      required: true
+    - name: tipo
+      label: Categoría
+      type: string
+    - name: titulo
+      label: Título
+      type: string
+      required: true
+    - name: institucion
+      label: Institución o proyecto
+      type: string
+    - name: detalle
+      label: Descripción
+      type: text
+    - name: detalleEnriquecido
+      label: Descripción enriquecida
+      type: rich-text
+      options:
+        format: markdown
+        switcher: true
+- name: perfil
+  label: Sobre mí y Nadir
+  type: file
+  path: src/content/perfil.json
+  format: json
+  fields:
+  - name: biografiaEnriquecida
+    label: Biografía (editor enriquecido)
+    type: rich-text
+    options:
+      format: markdown
+      switcher: true
+  - name: biografia
+    label: Biografía
+    type: text
+    list: true
+  - name: tituloIntencion
+    label: Título de la intención
+    type: string
+  - name: intencion
+    label: Intención de Nadir
+    type: text
+    list: true
+  - name: intencionEnriquecida
+    label: Intención editorial (editor enriquecido)
+    type: rich-text
+    options:
+      format: markdown
+      switcher: true
